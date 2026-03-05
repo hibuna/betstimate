@@ -1,0 +1,10 @@
+/betstimate/scraper/
+/config.json
+/sql/
+/database.sqlite
+/notes/
+
+/betstimate/strategies/*
+!/betstimate/strategies/__init__.py
+!/betstimate/strategies/strategy_base.py
+!/betstimate/strategies/strategy_sample.py
