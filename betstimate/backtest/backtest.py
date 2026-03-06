@@ -2,6 +2,7 @@ from decimal import Decimal
 from functools import lru_cache
 from itertools import product
 from typing import Any
+from datetime import date as datetime_date
 
 from betstimate.backtest.backtest_result import BacktestSeasonResult, BacktestResult
 from betstimate.backtest.backtest_variable import BacktestVariableGenerator
@@ -84,8 +85,12 @@ class Backtest:
         all_variable: dict[str, Any],
     ):
         season_previous = season_to_test.get_previous()
-        all_team_season_stat_previous = self.get_all_team_season_stat_by_season(season_previous)
-        all_team_season_stat_current = self.get_all_team_season_stat_by_season(season_to_test)
+        all_team_season_stat_previous = self.get_all_team_season_stat_by_season(
+            season_previous,
+        )
+        all_team_season_stat_current = self.get_all_team_season_stat_by_season(
+            season_to_test,
+        )
         teams_newly_qualified = self.get_all_team_newly_qualified(
             all_team_season_stat_previous=all_team_season_stat_previous,
             all_team_season_stat_current=all_team_season_stat_current,
@@ -97,10 +102,17 @@ class Backtest:
         )
 
         for match_result in self.query_all_match_result(season_to_test):
+            all_team_season_stat_current_to_date = (
+                self.get_all_team_season_stat_by_season_to_date(
+                    season=season_to_test,
+                    date=match_result.date,
+                )
+            )
             backtest_result = self.simulate_match(
                 backtest_result=backtest_result,
                 match_result=match_result,
                 all_team_season_stat_previous=all_team_season_stat_previous,
+                all_team_season_stat_current_to_date=all_team_season_stat_current_to_date,
                 all_team_name_newly_qualified=teams_newly_qualified,
                 all_variable=all_variable,
             )
@@ -117,12 +129,14 @@ class Backtest:
         backtest_result: BacktestSeasonResult,
         match_result: MatchResult,
         all_team_season_stat_previous: list[TeamSeasonStatistic],
+        all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],
         all_variable: dict[str, Any],
     ) -> BacktestSeasonResult:
         bet = self.strategy.create_bet_if_needed(
             match=MatchLib.strip_match_result_outcome(match_result),
             all_team_season_stat_previous=all_team_season_stat_previous,
+            all_team_season_stat_current_to_date=all_team_season_stat_current_to_date,
             all_team_name_newly_qualified=all_team_name_newly_qualified,
             all_variable=all_variable,
         )
@@ -185,8 +199,21 @@ class Backtest:
         return backtest_result
 
     @lru_cache(maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON)
-    def get_all_team_season_stat_by_season(self, season: Season) -> list[TeamSeasonStatistic]:
+    def get_all_team_season_stat_by_season(
+        self,
+        season: Season,
+    ) -> list[TeamSeasonStatistic]:
         all_stat = DatabaseLib.query_all_team_season_stat([season])
+
+        return sorted(all_stat, key=lambda stat: stat.total_points, reverse=True)
+
+    @lru_cache(maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON * CacheLib.SIZE_CACHE_MATCH_SEASON)
+    def get_all_team_season_stat_by_season_to_date(
+        self,
+        season: Season,
+        date: datetime_date,
+    ) -> list[TeamSeasonStatistic]:
+        all_stat = DatabaseLib.query_all_team_season_stat_to_date(season, date)
 
         return sorted(all_stat, key=lambda stat: stat.total_points, reverse=True)
 
@@ -200,7 +227,9 @@ class Backtest:
         all_team_season_stat_previous: list[TeamSeasonStatistic],
         all_team_season_stat_current: list[TeamSeasonStatistic],
     ) -> list[str]:
-        all_team_name_season_previous = self.get_all_team_name(all_team_season_stat_previous)
+        all_team_name_season_previous = self.get_all_team_name(
+            all_team_season_stat_previous,
+        )
 
         return [
             stat.team

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import date
+from datetime import date as datetime_date
 
 from betstimate.lib.date_lib import DateLib
 
@@ -7,7 +7,7 @@ from betstimate.lib.date_lib import DateLib
 @dataclass
 class MatchResult:
     id: int
-    date: date
+    date: datetime_date
     season: str
     league: str
     team_home_name: str
@@ -19,7 +19,7 @@ class MatchResult:
     def load_from_row(cls, row: tuple):
         return cls(
             id=row[0],
-            date=date.strptime(row[1], DateLib.DATE_FORMAT_DEFAULT),
+            date=datetime_date.strptime(row[1], DateLib.DATE_FORMAT_DEFAULT),
             season=row[2],
             league=row[3],
             team_home_name=row[4],

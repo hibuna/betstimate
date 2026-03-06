@@ -1,6 +1,8 @@
 from sqlite3 import connect as sqlite3_connect, Cursor
 from sqlite3 import Connection
+from datetime import date as datetime_date
 
+from betstimate.lib.date_lib import DateLib
 from betstimate.lib.file_lib import FileLib
 from betstimate.models.match_result import MatchResult
 from betstimate.models.statistic import TeamSeasonStatistic
@@ -12,6 +14,9 @@ class DatabaseLib:
     PATH_DATABASE = "database.sqlite"
 
     PATH_QUERY_ALL_TEAM_SEASON_STAT_BY_SEASON = "sql/all_team_season_stat_by_season.sql"
+    PATH_QUERY_ALL_TEAM_SEASON_STAT_BY_SEASON_TO_DATE = (
+        "sql/all_team_season_stat_by_season_to_date.sql"
+    )
     PATH_QUERY_MATCH_RESULT_BY_SEASON = "sql/all_match_result_by_season.sql"
 
     _connection: Connection
@@ -43,7 +48,28 @@ class DatabaseLib:
         return TeamSeasonStatistic.load_all_from_all_row(all_row)
 
     @staticmethod
-    def query_all_match_result_by_season(all_season: list[Season] = None) -> list[MatchResult]:
+    def query_all_team_season_stat_to_date(
+        season: Season,
+        date: datetime_date,
+    ) -> list[TeamSeasonStatistic]:
+        query = FileLib.read(
+            DatabaseLib.PATH_QUERY_ALL_TEAM_SEASON_STAT_BY_SEASON_TO_DATE
+        )
+        query = query.format(
+            season.value,
+            date.strftime(DateLib.DATE_FORMAT_DEFAULT),
+            season.value,
+            date.strftime(DateLib.DATE_FORMAT_DEFAULT),
+        )
+
+        all_row = DatabaseLib.execute_query(query).fetchall()
+
+        return TeamSeasonStatistic.load_all_from_all_row(all_row)
+
+    @staticmethod
+    def query_all_match_result_by_season(
+        all_season: list[Season] = None,
+    ) -> list[MatchResult]:
         all_season = all_season or Season.get_all()
         all_season_string = DatabaseLib._format_query_arg_string_array(
             [season.value for season in all_season]

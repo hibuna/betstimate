@@ -38,13 +38,17 @@ class BacktestTest(BetstimateTest):
 
     def get_number_of_match_total(self):
         all_season_except_first = Season.get_all()[1:]
-        all_match_result = DatabaseLib.query_all_match_result_by_season(all_season_except_first)
+        all_match_result = DatabaseLib.query_all_match_result_by_season(
+            all_season_except_first,
+        )
 
         return len(all_match_result)
 
     @staticmethod
     def get_match_result_by_match_id(match_id: int) -> MatchResult:
-        row = DatabaseLib.execute_query("""SELECT * FROM match WHERE id = {}""".format(match_id)).fetchone()
+        row = DatabaseLib.execute_query(
+            """SELECT * FROM match WHERE id = {}""".format(match_id)
+        ).fetchone()
 
         return MatchResult.load_from_row(row)
 
@@ -59,6 +63,7 @@ class TestStrategy(Strategy):
         self,
         match: Match,
         all_team_season_stat_previous: list[TeamSeasonStatistic],
+        all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],
         all_variable: dict[str, Any],
     ) -> Bet:

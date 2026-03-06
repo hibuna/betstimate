@@ -18,6 +18,7 @@ class StrategySample(Strategy):
         self,
         match: Match,
         all_team_season_stat_previous: list[TeamSeasonStatistic],
+        all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],
         all_variable: dict[str, Any],
     ) -> Optional[Bet]:
