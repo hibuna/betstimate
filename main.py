@@ -14,7 +14,7 @@ all_variable_generator = [
     BacktestIntegerGenerator("team_points_maximum", 60, 62),
 ]
 
-all_backtest_result = backtest.execute_all(all_variable_generator)
+all_backtest_result = backtest.simulate_all(all_variable_generator)
 
 result_string = Backtest.generate_result_string_all_backtest_result(
     all_backtest_result,

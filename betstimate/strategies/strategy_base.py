@@ -1,35 +1,28 @@
 from decimal import Decimal
-from typing import Any, Literal, Optional
+from typing import Any, Optional
 
-from betstimate.model.match import Match
-from betstimate.model.statistic import TeamSeasonStatistic
+from betstimate.models.statistic import TeamSeasonStatistic
+from betstimate.objects.bet import Bet
+from betstimate.objects.match import Match
+from betstimate.types.enums import WagerType
 
 
 class Strategy:
     balance_initial: Decimal
-    bet_size: Decimal
-    bet_method: Literal["percentage", "absolute"]
+    wager_size: Decimal
+    wager_type: WagerType
     quote_expected_minimum: Decimal
 
-    bet_size_minimum = Decimal("0.01")
+    wager_minimum = Decimal("0.01")
 
     @classmethod
-    def should_place_bet(
+    def create_bet_if_needed(
         cls,
         match: Match,
         all_team_season_stat_previous: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],
         all_variable: dict[str, Any],
-    ) -> bool: ...
-
-    @classmethod
-    def win_condition(
-        cls,
-        match: Match,
-        all_team_season_stat_previous: list[TeamSeasonStatistic],
-        all_team_name_newly_qualified: list[str],
-        all_variable: dict[str, Any],
-    ) -> bool: ...
+    ) -> Optional[Bet]: ...
 
     @classmethod
     def get_team_season_stat(
@@ -48,15 +41,15 @@ class Strategy:
         raise ValueError("No team season statistic found")
 
     @classmethod
-    def calculate_bet_size(cls, balance: Decimal) -> Decimal:
-        if cls.bet_method == "absolute":
-            bet_size = cls.bet_size
-        elif cls.bet_method == "percentage":
-            bet_size = balance * (cls.bet_size / Decimal("100"))
+    def calculate_wager(cls, balance: Decimal) -> Decimal:
+        if cls.wager_type == WagerType.ABSOLUTE:
+            wager = cls.wager_size
+        elif cls.wager_type == WagerType.PERCENTAGE:
+            wager = balance * (cls.wager_size / Decimal("100"))
         else:
-            raise ValueError(f"Unknown bet method {cls.bet_method}")
+            raise ValueError(f"Unknown wager type {cls.wager_type}")
 
-        if bet_size > cls.bet_size_minimum:
-            return bet_size
+        if wager > cls.wager_minimum:
+            return wager
         else:
-            return cls.bet_size_minimum
+            return cls.wager_minimum

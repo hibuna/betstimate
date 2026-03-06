@@ -5,7 +5,7 @@ from typing import Any
 
 from betstimate.lib.date_lib import DateLib
 
-from betstimate.model.match import Match
+from betstimate.models.match_result import MatchResult
 from betstimate.types.enums import Season
 from betstimate.types.types import Void
 
@@ -152,9 +152,9 @@ class BacktestSeasonResult:
 
     def log_match_result(
         self,
-        match: Match,
-        did_bet: bool,
-        has_won: bool,
+        match_result: MatchResult,
+        has_placed_bet: bool,
+        is_bet_fulfilled: bool,
     ) -> Void:
         if len(self._history):
             balance_previous = self._history[-1].balance
@@ -163,12 +163,12 @@ class BacktestSeasonResult:
 
         self._history.append(
             BacktestMatchResult(
-                season=match.season,
-                date=match.date.strftime(DateLib.DATE_FORMAT_DEFAULT),
+                season=match_result.season,
+                date=match_result.date.strftime(DateLib.DATE_FORMAT_DEFAULT),
                 balance=self._balance,
                 balance_delta=self._balance - balance_previous,
-                did_bet=did_bet,
-                has_won=has_won,
+                has_placed_bet=has_placed_bet,
+                is_bet_fulfilled=is_bet_fulfilled,
             )
         )
 
@@ -234,5 +234,5 @@ class BacktestMatchResult:
     date: str
     balance: Decimal
     balance_delta: Decimal
-    did_bet: bool
-    has_won: bool
+    has_placed_bet: bool
+    is_bet_fulfilled: bool

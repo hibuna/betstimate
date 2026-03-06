@@ -16,6 +16,9 @@ class Enum(enum_Enum):
         return [e.value for e in cls]
 
 
+class EnumUnordered(enum_Enum): ...
+
+
 class EnumOrdered(Enum):
     def get_previous(self) -> Self:
         all_member = tuple(type(self))
@@ -38,3 +41,8 @@ class Season(EnumOrdered):
     SEASON_23_24 = "2023_2024"
     SEASON_24_25 = "2024_2025"
     SEASON_25_26 = "2025_2026"
+
+
+class WagerType(EnumUnordered):
+    ABSOLUTE = 1
+    PERCENTAGE = 2

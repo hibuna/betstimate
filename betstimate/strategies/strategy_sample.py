@@ -1,47 +1,43 @@
 from decimal import Decimal
-from typing import Any
+from typing import Any, Optional
 
-from betstimate.model.match import Match
-from betstimate.model.statistic import TeamSeasonStatistic
+from betstimate.models.statistic import TeamSeasonStatistic
+from betstimate.objects.bet import BetTeamWin, Bet
+from betstimate.objects.match import Match
 from betstimate.strategies.strategy_base import Strategy
+from betstimate.types.enums import WagerType
 
 
 class StrategySample(Strategy):
     balance_initial = Decimal("100")
-    bet_size = Decimal("1")
-    bet_method = "absolute"
+    wager_size = Decimal("1")
+    wager_type = WagerType.ABSOLUTE
     quote_expected_minimum = Decimal("2")
 
-    def should_place_bet(
+    def create_bet_if_needed(
         self,
         match: Match,
         all_team_season_stat_previous: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],
         all_variable: dict[str, Any],
-    ) -> bool:
-        stat_team_home = self.get_team_season_stat(
+    ) -> Optional[Bet]:
+        team_season_stat_home = self.get_team_season_stat(
             team_name=match.team_home_name,
             all_team_season_stat=all_team_season_stat_previous,
             all_team_name_newly_qualified=all_team_name_newly_qualified,
         )
-        stat_team_away = self.get_team_season_stat(
+        team_season_stat_away = self.get_team_season_stat(
             team_name=match.team_away_name,
             all_team_season_stat=all_team_season_stat_previous,
             all_team_name_newly_qualified=all_team_name_newly_qualified,
         )
 
-        return (
-            stat_team_home
-            and stat_team_away
-            and stat_team_home.total_points > all_variable["team_points_maximum"]
-            and stat_team_away.total_points < all_variable["team_points_minimum"]
-        )
-
-    def win_condition(
-        self,
-        match: Match,
-        all_team_season_stat_previous: list[TeamSeasonStatistic],
-        all_team_name_newly_qualified: list[str],
-        all_variable: dict[str, Any],
-    ) -> bool:
-        return match.team_home_goals > match.team_away_goals
+        if (
+            team_season_stat_home
+            and team_season_stat_away
+            and team_season_stat_home.total_points > all_variable["team_points_maximum"]
+            and team_season_stat_away.total_points < all_variable["team_points_minimum"]
+        ):
+            return BetTeamWin(match.id, team_name=team_season_stat_home.team)
+        else:
+            return None

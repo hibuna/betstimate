@@ -5,10 +5,13 @@ from typing import Any
 
 from betstimate.backtest.backtest_result import BacktestSeasonResult, BacktestResult
 from betstimate.backtest.backtest_variable import BacktestVariableGenerator
+from betstimate.lib.bet_lib import BetLib
 from betstimate.lib.cache_lib import CacheLib
 from betstimate.lib.database_lib import DatabaseLib
-from betstimate.model.match import Match
-from betstimate.model.statistic import TeamSeasonStatistic
+from betstimate.lib.match_lib import MatchLib
+from betstimate.models.match_result import MatchResult
+from betstimate.models.statistic import TeamSeasonStatistic
+from betstimate.objects.bet import Bet
 from betstimate.strategies.strategy_base import Strategy
 from betstimate.types.enums import Season
 
@@ -19,7 +22,7 @@ class Backtest:
     def __init__(self, strategy: Strategy):
         self.strategy = strategy
 
-    def execute_all(
+    def simulate_all(
         self,
         all_variable_generator: list[BacktestVariableGenerator],
         all_season: list[Season] = None,
@@ -38,12 +41,12 @@ class Backtest:
         all_result = []
 
         for all_variable in all_combination_all_variable:
-            result = self.execute(all_variable, all_season)
+            result = self.simulate(all_variable, all_season)
             all_result.append(result)
 
         return all_result
 
-    def execute(
+    def simulate(
         self,
         all_variable: dict[str, Any],
         all_season: list[Season] = None,
@@ -58,7 +61,7 @@ class Backtest:
         balance_before_season = self.strategy.balance_initial
 
         for season in all_season:
-            backtest_season_result = self.execute_season(
+            backtest_season_result = self.simulate_season(
                 balance=balance_before_season,
                 season_to_test=season,
                 all_variable=all_variable,
@@ -74,18 +77,18 @@ class Backtest:
 
         return backtest_result
 
-    def execute_season(
+    def simulate_season(
         self,
         balance: Decimal,
         season_to_test: Season,
         all_variable: dict[str, Any],
     ):
         season_previous = season_to_test.get_previous()
-        all_stat_season_previous = self.get_all_stat_by_season(season_previous)
-        all_stat_season_current = self.get_all_stat_by_season(season_to_test)
+        all_team_season_stat_previous = self.get_all_team_season_stat_by_season(season_previous)
+        all_team_season_stat_current = self.get_all_team_season_stat_by_season(season_to_test)
         teams_newly_qualified = self.get_all_team_newly_qualified(
-            all_stat_season_previous=all_stat_season_previous,
-            all_stat_season_current=all_stat_season_current,
+            all_team_season_stat_previous=all_team_season_stat_previous,
+            all_team_season_stat_current=all_team_season_stat_current,
         )
 
         backtest_result = BacktestSeasonResult(
@@ -93,11 +96,11 @@ class Backtest:
             balance_initial=balance,
         )
 
-        for match in self.query_all_match(season_to_test):
-            backtest_result = self.execute_match(
+        for match_result in self.query_all_match_result(season_to_test):
+            backtest_result = self.simulate_match(
                 backtest_result=backtest_result,
-                match=match,
-                all_team_season_stat_previous=all_stat_season_previous,
+                match_result=match_result,
+                all_team_season_stat_previous=all_team_season_stat_previous,
                 all_team_name_newly_qualified=teams_newly_qualified,
                 all_variable=all_variable,
             )
@@ -109,70 +112,60 @@ class Backtest:
 
         return backtest_result
 
-    def execute_match(
+    def simulate_match(
         self,
         backtest_result: BacktestSeasonResult,
-        match: Match,
+        match_result: MatchResult,
         all_team_season_stat_previous: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],
         all_variable: dict[str, Any],
     ) -> BacktestSeasonResult:
-        if self.strategy.should_place_bet(
-            match=match,
+        bet = self.strategy.create_bet_if_needed(
+            match=MatchLib.strip_match_result_outcome(match_result),
             all_team_season_stat_previous=all_team_season_stat_previous,
             all_team_name_newly_qualified=all_team_name_newly_qualified,
             all_variable=all_variable,
-        ):
+        )
+
+        if bet is None:
+            has_placed_bet = False
+            is_bet_fulfilled = False
+        else:
             balance_before = backtest_result.get_balance()
             backtest_result = self.process_result(
-                backtest_result,
-                match,
-                all_team_season_stat_previous,
-                all_team_name_newly_qualified,
-                all_variable,
+                backtest_result=backtest_result,
+                match_result=match_result,
+                bet=bet,
             )
 
-            did_bet = True
-            has_won = backtest_result.get_balance() >= balance_before
-        else:
-            did_bet = False
-            has_won = False
+            has_placed_bet = True
+            is_bet_fulfilled = backtest_result.get_balance() >= balance_before
+            backtest_result.number_of_bet_total_increment()
 
         backtest_result.log_match_result(
-            match=match,
-            did_bet=did_bet,
-            has_won=has_won,
+            match_result=match_result,
+            has_placed_bet=has_placed_bet,
+            is_bet_fulfilled=is_bet_fulfilled,
         )
         return backtest_result
 
     def process_result(
         self,
         backtest_result: BacktestSeasonResult,
-        match: Match,
-        all_stat_season_previous: list[TeamSeasonStatistic],
-        teams_newly_qualified: list[str],
-        variables: dict[str, Any],
+        match_result: MatchResult,
+        bet: Bet,
     ) -> BacktestSeasonResult:
-        backtest_result.number_of_bet_total_increment()
-        bet_size_current = self.strategy.calculate_bet_size(
-            backtest_result.get_balance()
-        )
+        wager = self.strategy.calculate_wager(backtest_result.get_balance())
 
-        if self.strategy.win_condition(
-            match,
-            all_stat_season_previous,
-            teams_newly_qualified,
-            variables,
-        ):
-            return self.process_win(backtest_result, bet_size_current)
+        if BetLib.is_fulfilled(bet, match_result):
+            return self.process_win(backtest_result, wager)
         else:
-            return self.process_loss(backtest_result, bet_size_current)
+            return self.process_loss(backtest_result, wager)
 
     def process_win(
-        self, backtest_result: BacktestSeasonResult, bet_size_current: Decimal
+        self, backtest_result: BacktestSeasonResult, wager: Decimal
     ) -> BacktestSeasonResult:
-        profit = bet_size_current * self.strategy.quote_expected_minimum
-        profit = profit - bet_size_current
+        profit = (wager * self.strategy.quote_expected_minimum) - wager
 
         backtest_result.add_to_balance(profit)
         backtest_result.streak_win_increment()
@@ -183,41 +176,41 @@ class Backtest:
     def process_loss(
         self,
         backtest_result: BacktestSeasonResult,
-        bet_size_current: Decimal,
+        wager: Decimal,
     ) -> BacktestSeasonResult:
-        backtest_result.subtract_from_balance(bet_size_current)
+        backtest_result.subtract_from_balance(wager)
         backtest_result.streak_lose_increment()
         backtest_result.streak_win_reset()
 
         return backtest_result
 
     @lru_cache(maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON)
-    def get_all_stat_by_season(self, season: Season) -> list[TeamSeasonStatistic]:
-        all_stat = DatabaseLib.query_all_stat_by_season([season])
+    def get_all_team_season_stat_by_season(self, season: Season) -> list[TeamSeasonStatistic]:
+        all_stat = DatabaseLib.query_all_team_season_stat([season])
 
         return sorted(all_stat, key=lambda stat: stat.total_points, reverse=True)
 
     def get_all_team_name(
-        self, season_all_stat: list[TeamSeasonStatistic]
+        self, all_team_season_stat: list[TeamSeasonStatistic]
     ) -> list[str]:
-        return [stat.team for stat in season_all_stat]
+        return [stat.team for stat in all_team_season_stat]
 
     def get_all_team_newly_qualified(
         self,
-        all_stat_season_previous: list[TeamSeasonStatistic],
-        all_stat_season_current: list[TeamSeasonStatistic],
+        all_team_season_stat_previous: list[TeamSeasonStatistic],
+        all_team_season_stat_current: list[TeamSeasonStatistic],
     ) -> list[str]:
-        all_team_name_season_previous = self.get_all_team_name(all_stat_season_previous)
+        all_team_name_season_previous = self.get_all_team_name(all_team_season_stat_previous)
 
         return [
             stat.team
-            for stat in all_stat_season_current
+            for stat in all_team_season_stat_current
             if stat.team not in all_team_name_season_previous
         ]
 
     @lru_cache(maxsize=CacheLib.SIZE_CACHE_MATCH_SEASON)
-    def query_all_match(self, season_to_test: Season) -> list[Match]:
-        return DatabaseLib.query_all_match_by_season([season_to_test])
+    def query_all_match_result(self, season_to_test: Season) -> list[MatchResult]:
+        return DatabaseLib.query_all_match_result_by_season([season_to_test])
 
     @staticmethod
     def generate_result_string_all_backtest_result(

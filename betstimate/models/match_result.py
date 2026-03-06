@@ -5,7 +5,7 @@ from betstimate.lib.date_lib import DateLib
 
 
 @dataclass
-class Match:
+class MatchResult:
     id: int
     date: date
     season: str
