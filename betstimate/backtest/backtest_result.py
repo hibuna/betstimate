@@ -55,6 +55,7 @@ class BacktestResult:
             season_result.get_streak_under_break_even_highest(),
         )
         self.is_bankrupt = self.is_bankrupt or season_result.get_is_bankrupt()
+        self.number_of_bet_total += season_result.get_number_of_bet_total()
 
 
 class BacktestSeasonResult:
@@ -120,6 +121,9 @@ class BacktestSeasonResult:
         self._balance -= balance
         self._ensure_balance_highest_updated()
         self._ensure_balance_lowest_updated()
+
+    def get_number_of_bet_total(self) -> int:
+        return self._number_of_bet_total
 
     def number_of_bet_total_increment(self) -> Void:
         self._number_of_bet_total += 1

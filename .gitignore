@@ -3,6 +3,7 @@
 /sql/
 /database.sqlite
 /notes/
+/betstimate/result/
 
 /betstimate/strategies/*
 !/betstimate/strategies/__init__.py

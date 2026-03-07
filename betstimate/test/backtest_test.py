@@ -7,8 +7,8 @@ from betstimate.core.initialize import initialize
 from betstimate.lib.database_lib import DatabaseLib
 from betstimate.lib.match_lib import MatchLib
 from betstimate.models.match_result import MatchResult
-from betstimate.models.statistic import TeamSeasonStatistic
 from betstimate.objects.bet import Bet, BetTeamWin, BetDraw
+from betstimate.objects.info import BetInfo
 from betstimate.objects.match import Match
 from betstimate.strategies.strategy_base import Strategy
 from betstimate.types.enums import Season, WagerType
@@ -62,10 +62,7 @@ class TestStrategy(Strategy):
     def create_bet_if_needed(
         self,
         match: Match,
-        all_match_result_to_date: list[MatchResult],
-        all_team_season_stat_previous: list[TeamSeasonStatistic],
-        all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
-        all_team_name_newly_qualified: list[str],
+        bet_info: BetInfo,
         all_variable: dict[str, Any],
     ) -> Bet:
         match_result = BacktestTest.get_match_result_by_match_id(match.id)

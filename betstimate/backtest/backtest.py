@@ -10,9 +10,10 @@ from betstimate.lib.bet_lib import BetLib
 from betstimate.lib.cache_lib import CacheLib
 from betstimate.lib.database_lib import DatabaseLib
 from betstimate.lib.match_lib import MatchLib
-from betstimate.models.match_result import MatchResult
+from betstimate.models.match_result import MatchResult, TeamMatchResult
 from betstimate.models.statistic import TeamSeasonStatistic
 from betstimate.objects.bet import Bet
+from betstimate.objects.info import BetInfo
 from betstimate.strategies.strategy_base import Strategy
 from betstimate.types.enums import Season
 
@@ -64,7 +65,7 @@ class Backtest:
         for season in all_season:
             backtest_season_result = self.simulate_season(
                 balance=balance_before_season,
-                season_to_test=season,
+                season_current=season,
                 all_variable=all_variable,
             )
             backtest_season_result.is_bankrupt_sync()
@@ -81,70 +82,59 @@ class Backtest:
     def simulate_season(
         self,
         balance: Decimal,
-        season_to_test: Season,
+        season_current: Season,
         all_variable: dict[str, Any],
-    ):
-        season_previous = season_to_test.get_previous()
+    ) -> BacktestSeasonResult:
+        season_previous = season_current.get_previous()
         all_team_season_stat_previous = self.query_all_team_season_stat_by_season(
             season_previous,
         )
         all_team_season_stat_current = self.query_all_team_season_stat_by_season(
-            season_to_test,
+            season_current,
         )
-        teams_newly_qualified = self.get_all_team_newly_qualified(
+        all_team_name_newly_qualified = self.get_all_team_newly_qualified(
             all_team_season_stat_previous=all_team_season_stat_previous,
             all_team_season_stat_current=all_team_season_stat_current,
         )
 
-        backtest_result = BacktestSeasonResult(
-            season=season_to_test,
+        backtest_season_result = BacktestSeasonResult(
+            season=season_current,
             balance_initial=balance,
         )
 
-        for match_result in self.query_all_match_result_by_season(season_to_test):
-            all_match_result_to_date = self.query_all_match_result_by_season_to_date(
-                season=season_to_test,
-                date=match_result.date,
-            )
-            all_team_season_stat_current_to_date = (
-                self.query_all_team_season_stat_by_season_to_date(
-                    season=season_to_test,
-                    date=match_result.date,
-                )
-            )
-            backtest_result = self.simulate_match(
-                backtest_result=backtest_result,
+        for match_result in self.query_all_match_result_by_season(season_current):
+            bet_info = self.create_bet_info(
+                backtest_season_result=backtest_season_result,
                 match_result=match_result,
-                all_match_result_to_date=all_match_result_to_date,
+                season=season_current,
                 all_team_season_stat_previous=all_team_season_stat_previous,
-                all_team_season_stat_current_to_date=all_team_season_stat_current_to_date,
-                all_team_name_newly_qualified=teams_newly_qualified,
+                all_team_name_newly_qualified=all_team_name_newly_qualified,
+            )
+
+            backtest_season_result = self.simulate_match(
+                backtest_season_result=backtest_season_result,
+                match_result=match_result,
+                bet_info=bet_info,
                 all_variable=all_variable,
             )
 
-            backtest_result.balance_under_break_even_sync()
+            backtest_season_result.balance_under_break_even_sync()
 
-            if backtest_result.is_bankrupt_sync():
+            if backtest_season_result.is_bankrupt_sync():
                 break
 
-        return backtest_result
+        return backtest_season_result
 
     def simulate_match(
         self,
-        backtest_result: BacktestSeasonResult,
+        backtest_season_result: BacktestSeasonResult,
         match_result: MatchResult,
-        all_match_result_to_date: list[MatchResult],
-        all_team_season_stat_previous: list[TeamSeasonStatistic],
-        all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
-        all_team_name_newly_qualified: list[str],
+        bet_info: BetInfo,
         all_variable: dict[str, Any],
     ) -> BacktestSeasonResult:
         bet = self.strategy.create_bet_if_needed(
             match=MatchLib.strip_match_result_outcome(match_result),
-            all_match_result_to_date=all_match_result_to_date,
-            all_team_season_stat_previous=all_team_season_stat_previous,
-            all_team_season_stat_current_to_date=all_team_season_stat_current_to_date,
-            all_team_name_newly_qualified=all_team_name_newly_qualified,
+            bet_info=bet_info,
             all_variable=all_variable,
         )
 
@@ -152,23 +142,23 @@ class Backtest:
             has_placed_bet = False
             is_bet_fulfilled = False
         else:
-            balance_before = backtest_result.get_balance()
-            backtest_result = self.process_result(
-                backtest_result=backtest_result,
+            balance_before = backtest_season_result.get_balance()
+            backtest_season_result = self.process_result(
+                backtest_result=backtest_season_result,
                 match_result=match_result,
                 bet=bet,
             )
 
             has_placed_bet = True
-            is_bet_fulfilled = backtest_result.get_balance() >= balance_before
-            backtest_result.number_of_bet_total_increment()
+            is_bet_fulfilled = backtest_season_result.get_balance() >= balance_before
+            backtest_season_result.number_of_bet_total_increment()
 
-        backtest_result.log_match_result(
+        backtest_season_result.log_match_result(
             match_result=match_result,
             has_placed_bet=has_placed_bet,
             is_bet_fulfilled=is_bet_fulfilled,
         )
-        return backtest_result
+        return backtest_season_result
 
     def process_result(
         self,
@@ -205,6 +195,50 @@ class Backtest:
 
         return backtest_result
 
+    def create_bet_info(
+        self,
+        backtest_season_result: BacktestSeasonResult,
+        match_result: MatchResult,
+        season: Season,
+        all_team_season_stat_previous: list[TeamSeasonStatistic],
+        all_team_name_newly_qualified: list[str],
+    ) -> BetInfo:
+        all_match_result_to_date = self.query_all_match_result_by_season_to_date(
+            season=season,
+            date=match_result.date,
+        )
+        all_team_match_result_to_date_team_home = (
+            self.query_all_team_match_result_by_season_to_date(
+                team_name=match_result.team_home_name,
+                season=season,
+                date=match_result.date,
+            )
+        )
+        all_team_match_result_to_date_team_away = (
+            self.query_all_team_match_result_by_season_to_date(
+                team_name=match_result.team_away_name,
+                season=season,
+                date=match_result.date,
+            )
+        )
+        all_team_season_stat_current_to_date = (
+            self.query_all_team_season_stat_by_season_to_date(
+                season=season,
+                date=match_result.date,
+            )
+        )
+
+        return BetInfo(
+            backtest_season_result=backtest_season_result,
+            match=MatchLib.strip_match_result_outcome(match_result),
+            all_match_result_to_date=all_match_result_to_date,
+            all_team_match_result_to_date_team_home=all_team_match_result_to_date_team_home,
+            all_team_match_result_to_date_team_away=all_team_match_result_to_date_team_away,
+            all_team_season_stat_previous=all_team_season_stat_previous,
+            all_team_season_stat_current_to_date=all_team_season_stat_current_to_date,
+            all_team_name_newly_qualified=all_team_name_newly_qualified,
+        )
+
     @lru_cache(maxsize=CacheLib.SIZE_CACHE_MATCH_SEASON)
     def query_all_match_result_by_season(self, season: Season) -> list[MatchResult]:
         return DatabaseLib.query_all_match_result_by_season([season])
@@ -225,6 +259,38 @@ class Backtest:
                 all_match_result_to_date.append(match_result)
 
         return all_match_result_to_date
+
+    @lru_cache(maxsize=CacheLib.SIZE_CACHE_MATCH_SEASON)
+    def query_all_team_match_result_by_season(
+        self,
+        team_name: str,
+        season: Season,
+    ) -> list[TeamMatchResult]:
+        return DatabaseLib.query_all_team_match_result_by_season(
+            team_name=team_name,
+            all_season=[season],
+        )
+
+    @lru_cache(
+        maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON * CacheLib.SIZE_CACHE_MATCH_SEASON
+    )
+    def query_all_team_match_result_by_season_to_date(
+        self,
+        team_name: str,
+        season: Season,
+        date: datetime_date,
+    ) -> list[TeamMatchResult]:
+        all_team_match_result = self.query_all_team_match_result_by_season(
+            team_name=team_name,
+            season=season,
+        )
+        all_team_match_result_to_date = []
+
+        for team_match_result in all_team_match_result:
+            if team_match_result.date < date:
+                all_team_match_result_to_date.append(team_match_result)
+
+        return all_team_match_result_to_date
 
     @lru_cache(maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON)
     def query_all_team_season_stat_by_season(
@@ -287,13 +353,16 @@ class Backtest:
             if profit == Decimal("0"):
                 profit_avg = Decimal("0")
             else:
-                profit_avg = profit / len(all_backtest_result)
+                profit_avg = profit / len(Season.get_all())
 
             profit = round(float(profit), 2)
             profit_avg = round(float(profit_avg), 2)
 
             output.append("profit: {}".format(profit))
             output.append("profit season avg: {}".format(profit_avg))
+            output.append(
+                "number of bets placed: {}".format(backtest_result.number_of_bet_total)
+            )
             output.append("all_variable: {}".format(backtest_result.variables))
 
             if add_season_info:

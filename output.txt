@@ -1,5 +1,6 @@
 profit: 153.0
-profit season avg: 8.5
+profit season avg: 15.3
+number of bets placed: 285
 all_variable: {'team_points_minimum': 50, 'team_points_maximum': 60}
 	{'season': '2017_2018', 'profit': 26.0, 'balance_initial': 100.0, 'balance': 126.0, 'balance_highest': 127.0, 'balance_lowest': 100.0, 'number_of_bet_total': 44, 'streak_win_highest': 10, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 126.0, 'balance': 148.0, 'balance_highest': 148.0, 'balance_lowest': 125.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -12,7 +13,8 @@ all_variable: {'team_points_minimum': 50, 'team_points_maximum': 60}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 245.0, 'balance': 253.0, 'balance_highest': 255.0, 'balance_lowest': 245.0, 'number_of_bet_total': 30, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 156.0
-profit season avg: 8.67
+profit season avg: 15.6
+number of bets placed: 268
 all_variable: {'team_points_minimum': 50, 'team_points_maximum': 61}
 	{'season': '2017_2018', 'profit': 26.0, 'balance_initial': 100.0, 'balance': 126.0, 'balance_highest': 127.0, 'balance_lowest': 100.0, 'number_of_bet_total': 44, 'streak_win_highest': 10, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 126.0, 'balance': 148.0, 'balance_highest': 148.0, 'balance_lowest': 125.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -25,7 +27,8 @@ all_variable: {'team_points_minimum': 50, 'team_points_maximum': 61}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 248.0, 'balance': 256.0, 'balance_highest': 258.0, 'balance_lowest': 248.0, 'number_of_bet_total': 30, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 153.0
-profit season avg: 8.5
+profit season avg: 15.3
+number of bets placed: 257
 all_variable: {'team_points_minimum': 50, 'team_points_maximum': 62}
 	{'season': '2017_2018', 'profit': 23.0, 'balance_initial': 100.0, 'balance': 123.0, 'balance_highest': 124.0, 'balance_lowest': 100.0, 'number_of_bet_total': 33, 'streak_win_highest': 9, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 123.0, 'balance': 145.0, 'balance_highest': 145.0, 'balance_lowest': 122.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -38,7 +41,8 @@ all_variable: {'team_points_minimum': 50, 'team_points_maximum': 62}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 245.0, 'balance': 253.0, 'balance_highest': 255.0, 'balance_lowest': 245.0, 'number_of_bet_total': 30, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 153.0
-profit season avg: 8.5
+profit season avg: 15.3
+number of bets placed: 293
 all_variable: {'team_points_minimum': 51, 'team_points_maximum': 60}
 	{'season': '2017_2018', 'profit': 26.0, 'balance_initial': 100.0, 'balance': 126.0, 'balance_highest': 127.0, 'balance_lowest': 100.0, 'number_of_bet_total': 44, 'streak_win_highest': 10, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 126.0, 'balance': 148.0, 'balance_highest': 148.0, 'balance_lowest': 125.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -51,7 +55,8 @@ all_variable: {'team_points_minimum': 51, 'team_points_maximum': 60}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 245.0, 'balance': 253.0, 'balance_highest': 255.0, 'balance_lowest': 245.0, 'number_of_bet_total': 30, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 157.0
-profit season avg: 8.72
+profit season avg: 15.7
+number of bets placed: 275
 all_variable: {'team_points_minimum': 51, 'team_points_maximum': 61}
 	{'season': '2017_2018', 'profit': 26.0, 'balance_initial': 100.0, 'balance': 126.0, 'balance_highest': 127.0, 'balance_lowest': 100.0, 'number_of_bet_total': 44, 'streak_win_highest': 10, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 126.0, 'balance': 148.0, 'balance_highest': 148.0, 'balance_lowest': 125.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -64,7 +69,8 @@ all_variable: {'team_points_minimum': 51, 'team_points_maximum': 61}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 249.0, 'balance': 257.0, 'balance_highest': 259.0, 'balance_lowest': 249.0, 'number_of_bet_total': 30, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 154.0
-profit season avg: 8.56
+profit season avg: 15.4
+number of bets placed: 264
 all_variable: {'team_points_minimum': 51, 'team_points_maximum': 62}
 	{'season': '2017_2018', 'profit': 23.0, 'balance_initial': 100.0, 'balance': 123.0, 'balance_highest': 124.0, 'balance_lowest': 100.0, 'number_of_bet_total': 33, 'streak_win_highest': 9, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 123.0, 'balance': 145.0, 'balance_highest': 145.0, 'balance_lowest': 122.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -77,7 +83,8 @@ all_variable: {'team_points_minimum': 51, 'team_points_maximum': 62}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 246.0, 'balance': 254.0, 'balance_highest': 256.0, 'balance_lowest': 246.0, 'number_of_bet_total': 30, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 154.0
-profit season avg: 8.56
+profit season avg: 15.4
+number of bets placed: 306
 all_variable: {'team_points_minimum': 52, 'team_points_maximum': 60}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 128.0, 'balance': 150.0, 'balance_highest': 150.0, 'balance_lowest': 127.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -90,7 +97,8 @@ all_variable: {'team_points_minimum': 52, 'team_points_maximum': 60}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 246.0, 'balance': 254.0, 'balance_highest': 256.0, 'balance_lowest': 246.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 159.0
-profit season avg: 8.83
+profit season avg: 15.9
+number of bets placed: 287
 all_variable: {'team_points_minimum': 52, 'team_points_maximum': 61}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 128.0, 'balance': 150.0, 'balance_highest': 150.0, 'balance_lowest': 127.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -103,7 +111,8 @@ all_variable: {'team_points_minimum': 52, 'team_points_maximum': 61}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 251.0, 'balance': 259.0, 'balance_highest': 261.0, 'balance_lowest': 251.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 155.0
-profit season avg: 8.61
+profit season avg: 15.5
+number of bets placed: 275
 all_variable: {'team_points_minimum': 52, 'team_points_maximum': 62}
 	{'season': '2017_2018', 'profit': 24.0, 'balance_initial': 100.0, 'balance': 124.0, 'balance_highest': 125.0, 'balance_lowest': 100.0, 'number_of_bet_total': 36, 'streak_win_highest': 10, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 124.0, 'balance': 146.0, 'balance_highest': 146.0, 'balance_lowest': 123.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -116,7 +125,8 @@ all_variable: {'team_points_minimum': 52, 'team_points_maximum': 62}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 247.0, 'balance': 255.0, 'balance_highest': 257.0, 'balance_lowest': 247.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 154.0
-profit season avg: 8.56
+profit season avg: 15.4
+number of bets placed: 306
 all_variable: {'team_points_minimum': 53, 'team_points_maximum': 60}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 128.0, 'balance': 150.0, 'balance_highest': 150.0, 'balance_lowest': 127.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -129,7 +139,8 @@ all_variable: {'team_points_minimum': 53, 'team_points_maximum': 60}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 246.0, 'balance': 254.0, 'balance_highest': 256.0, 'balance_lowest': 246.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 159.0
-profit season avg: 8.83
+profit season avg: 15.9
+number of bets placed: 287
 all_variable: {'team_points_minimum': 53, 'team_points_maximum': 61}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 128.0, 'balance': 150.0, 'balance_highest': 150.0, 'balance_lowest': 127.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -142,7 +153,8 @@ all_variable: {'team_points_minimum': 53, 'team_points_maximum': 61}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 251.0, 'balance': 259.0, 'balance_highest': 261.0, 'balance_lowest': 251.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 155.0
-profit season avg: 8.61
+profit season avg: 15.5
+number of bets placed: 275
 all_variable: {'team_points_minimum': 53, 'team_points_maximum': 62}
 	{'season': '2017_2018', 'profit': 24.0, 'balance_initial': 100.0, 'balance': 124.0, 'balance_highest': 125.0, 'balance_lowest': 100.0, 'number_of_bet_total': 36, 'streak_win_highest': 10, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 124.0, 'balance': 146.0, 'balance_highest': 146.0, 'balance_lowest': 123.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -155,7 +167,8 @@ all_variable: {'team_points_minimum': 53, 'team_points_maximum': 62}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 247.0, 'balance': 255.0, 'balance_highest': 257.0, 'balance_lowest': 247.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 160.0
-profit season avg: 8.89
+profit season avg: 16.0
+number of bets placed: 318
 all_variable: {'team_points_minimum': 54, 'team_points_maximum': 60}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 128.0, 'balance': 150.0, 'balance_highest': 150.0, 'balance_lowest': 127.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -168,7 +181,8 @@ all_variable: {'team_points_minimum': 54, 'team_points_maximum': 60}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 252.0, 'balance': 260.0, 'balance_highest': 262.0, 'balance_lowest': 252.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 164.0
-profit season avg: 9.11
+profit season avg: 16.4
+number of bets placed: 298
 all_variable: {'team_points_minimum': 54, 'team_points_maximum': 61}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 128.0, 'balance': 150.0, 'balance_highest': 150.0, 'balance_lowest': 127.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -181,7 +195,8 @@ all_variable: {'team_points_minimum': 54, 'team_points_maximum': 61}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 256.0, 'balance': 264.0, 'balance_highest': 266.0, 'balance_lowest': 256.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 160.0
-profit season avg: 8.89
+profit season avg: 16.0
+number of bets placed: 286
 all_variable: {'team_points_minimum': 54, 'team_points_maximum': 62}
 	{'season': '2017_2018', 'profit': 24.0, 'balance_initial': 100.0, 'balance': 124.0, 'balance_highest': 125.0, 'balance_lowest': 100.0, 'number_of_bet_total': 36, 'streak_win_highest': 10, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 22.0, 'balance_initial': 124.0, 'balance': 146.0, 'balance_highest': 146.0, 'balance_lowest': 123.0, 'number_of_bet_total': 40, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 5, 'is_bankrupt': False, 'history': '306'}
@@ -194,7 +209,8 @@ all_variable: {'team_points_minimum': 54, 'team_points_maximum': 62}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 252.0, 'balance': 260.0, 'balance_highest': 262.0, 'balance_lowest': 252.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 165.0
-profit season avg: 9.17
+profit season avg: 16.5
+number of bets placed: 327
 all_variable: {'team_points_minimum': 55, 'team_points_maximum': 60}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 26.0, 'balance_initial': 128.0, 'balance': 154.0, 'balance_highest': 154.0, 'balance_lowest': 127.0, 'number_of_bet_total': 44, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 2, 'is_bankrupt': False, 'history': '306'}
@@ -207,7 +223,8 @@ all_variable: {'team_points_minimum': 55, 'team_points_maximum': 60}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 257.0, 'balance': 265.0, 'balance_highest': 267.0, 'balance_lowest': 257.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 169.0
-profit season avg: 9.39
+profit season avg: 16.9
+number of bets placed: 307
 all_variable: {'team_points_minimum': 55, 'team_points_maximum': 61}
 	{'season': '2017_2018', 'profit': 28.0, 'balance_initial': 100.0, 'balance': 128.0, 'balance_highest': 129.0, 'balance_lowest': 100.0, 'number_of_bet_total': 48, 'streak_win_highest': 8, 'streak_lose_highest': 2, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 26.0, 'balance_initial': 128.0, 'balance': 154.0, 'balance_highest': 154.0, 'balance_lowest': 127.0, 'number_of_bet_total': 44, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 2, 'is_bankrupt': False, 'history': '306'}
@@ -220,7 +237,8 @@ all_variable: {'team_points_minimum': 55, 'team_points_maximum': 61}
 	{'season': '2025_2026', 'profit': 8.0, 'balance_initial': 261.0, 'balance': 269.0, 'balance_highest': 271.0, 'balance_lowest': 261.0, 'number_of_bet_total': 34, 'streak_win_highest': 8, 'streak_lose_highest': 3, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '220'}
 ___________
 profit: 165.0
-profit season avg: 9.17
+profit season avg: 16.5
+number of bets placed: 295
 all_variable: {'team_points_minimum': 55, 'team_points_maximum': 62}
 	{'season': '2017_2018', 'profit': 24.0, 'balance_initial': 100.0, 'balance': 124.0, 'balance_highest': 125.0, 'balance_lowest': 100.0, 'number_of_bet_total': 36, 'streak_win_highest': 10, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 0, 'is_bankrupt': False, 'history': '306'}
 	{'season': '2018_2019', 'profit': 26.0, 'balance_initial': 124.0, 'balance': 150.0, 'balance_highest': 150.0, 'balance_lowest': 123.0, 'number_of_bet_total': 44, 'streak_win_highest': 6, 'streak_lose_highest': 1, 'streak_under_break_even_highest': 2, 'is_bankrupt': False, 'history': '306'}

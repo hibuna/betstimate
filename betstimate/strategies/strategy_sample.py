@@ -1,9 +1,8 @@
 from decimal import Decimal
 from typing import Any, Optional
 
-from betstimate.models.match_result import MatchResult
-from betstimate.models.statistic import TeamSeasonStatistic
 from betstimate.objects.bet import BetTeamWin, Bet
+from betstimate.objects.info import BetInfo
 from betstimate.objects.match import Match
 from betstimate.strategies.strategy_base import Strategy
 from betstimate.types.enums import WagerType
@@ -18,21 +17,18 @@ class StrategySample(Strategy):
     def create_bet_if_needed(
         self,
         match: Match,
-        all_match_result_to_date: list[MatchResult],
-        all_team_season_stat_previous: list[TeamSeasonStatistic],
-        all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
-        all_team_name_newly_qualified: list[str],
+        bet_info: BetInfo,
         all_variable: dict[str, Any],
     ) -> Optional[Bet]:
         team_season_stat_home = self.get_team_season_stat(
             team_name=match.team_home_name,
-            all_team_season_stat=all_team_season_stat_previous,
-            all_team_name_newly_qualified=all_team_name_newly_qualified,
+            all_team_season_stat=bet_info.all_team_season_stat_previous,
+            all_team_name_newly_qualified=bet_info.all_team_name_newly_qualified,
         )
         team_season_stat_away = self.get_team_season_stat(
             team_name=match.team_away_name,
-            all_team_season_stat=all_team_season_stat_previous,
-            all_team_name_newly_qualified=all_team_name_newly_qualified,
+            all_team_season_stat=bet_info.all_team_season_stat_previous,
+            all_team_name_newly_qualified=bet_info.all_team_name_newly_qualified,
         )
 
         if (

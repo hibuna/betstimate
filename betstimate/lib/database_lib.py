@@ -4,7 +4,7 @@ from datetime import date as datetime_date
 
 from betstimate.lib.date_lib import DateLib
 from betstimate.lib.file_lib import FileLib
-from betstimate.models.match_result import MatchResult
+from betstimate.models.match_result import MatchResult, TeamMatchResult
 from betstimate.models.statistic import TeamSeasonStatistic
 from betstimate.types.enums import Season
 from betstimate.types.types import Void
@@ -18,6 +18,7 @@ class DatabaseLib:
         "sql/all_team_season_stat_by_season_to_date.sql"
     )
     PATH_QUERY_MATCH_RESULT_BY_SEASON = "sql/all_match_result_by_season.sql"
+    PATH_QUERY_TEAM_MATCH_RESULT_BY_SEASON = "sql/all_team_match_result_by_season.sql"
 
     _connection: Connection
 
@@ -31,6 +32,10 @@ class DatabaseLib:
     @staticmethod
     def execute_query(query: str) -> Cursor:
         return DatabaseLib._connection.execute(query)
+
+    @staticmethod
+    def commit() -> Void:
+        return DatabaseLib._connection.commit()
 
     @staticmethod
     def query_all_team_season_stat(
@@ -80,6 +85,22 @@ class DatabaseLib:
         all_row = DatabaseLib.execute_query(query).fetchall()
 
         return MatchResult.load_all_from_all_row(all_row)
+
+    @staticmethod
+    def query_all_team_match_result_by_season(
+        team_name: str,
+        all_season: list[Season] = None,
+    ) -> list[TeamMatchResult]:
+        all_season = all_season or Season.get_all()
+        all_season_string = DatabaseLib._format_query_arg_string_array(
+            [season.value for season in all_season]
+        )
+        query = FileLib.read(DatabaseLib.PATH_QUERY_TEAM_MATCH_RESULT_BY_SEASON)
+        query = query.format(team_name, all_season_string)
+
+        all_row = DatabaseLib.execute_query(query).fetchall()
+
+        return TeamMatchResult.load_all_from_all_row(all_row)
 
     @staticmethod
     def _format_query_arg_string_array(all_value: list[str]) -> str:
