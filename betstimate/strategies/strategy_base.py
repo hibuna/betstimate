@@ -1,6 +1,7 @@
 from decimal import Decimal
 from typing import Any, Optional
 
+from betstimate.models.match_result import MatchResult
 from betstimate.models.statistic import TeamSeasonStatistic
 from betstimate.objects.bet import Bet
 from betstimate.objects.match import Match
@@ -19,6 +20,7 @@ class Strategy:
     def create_bet_if_needed(
         cls,
         match: Match,
+        all_match_result_to_date: list[MatchResult],
         all_team_season_stat_previous: list[TeamSeasonStatistic],
         all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],

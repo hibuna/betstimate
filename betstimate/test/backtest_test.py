@@ -62,6 +62,7 @@ class TestStrategy(Strategy):
     def create_bet_if_needed(
         self,
         match: Match,
+        all_match_result_to_date: list[MatchResult],
         all_team_season_stat_previous: list[TeamSeasonStatistic],
         all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],

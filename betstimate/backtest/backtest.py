@@ -85,10 +85,10 @@ class Backtest:
         all_variable: dict[str, Any],
     ):
         season_previous = season_to_test.get_previous()
-        all_team_season_stat_previous = self.get_all_team_season_stat_by_season(
+        all_team_season_stat_previous = self.query_all_team_season_stat_by_season(
             season_previous,
         )
-        all_team_season_stat_current = self.get_all_team_season_stat_by_season(
+        all_team_season_stat_current = self.query_all_team_season_stat_by_season(
             season_to_test,
         )
         teams_newly_qualified = self.get_all_team_newly_qualified(
@@ -101,9 +101,13 @@ class Backtest:
             balance_initial=balance,
         )
 
-        for match_result in self.query_all_match_result(season_to_test):
+        for match_result in self.query_all_match_result_by_season(season_to_test):
+            all_match_result_to_date = self.query_all_match_result_by_season_to_date(
+                season=season_to_test,
+                date=match_result.date,
+            )
             all_team_season_stat_current_to_date = (
-                self.get_all_team_season_stat_by_season_to_date(
+                self.query_all_team_season_stat_by_season_to_date(
                     season=season_to_test,
                     date=match_result.date,
                 )
@@ -111,6 +115,7 @@ class Backtest:
             backtest_result = self.simulate_match(
                 backtest_result=backtest_result,
                 match_result=match_result,
+                all_match_result_to_date=all_match_result_to_date,
                 all_team_season_stat_previous=all_team_season_stat_previous,
                 all_team_season_stat_current_to_date=all_team_season_stat_current_to_date,
                 all_team_name_newly_qualified=teams_newly_qualified,
@@ -128,6 +133,7 @@ class Backtest:
         self,
         backtest_result: BacktestSeasonResult,
         match_result: MatchResult,
+        all_match_result_to_date: list[MatchResult],
         all_team_season_stat_previous: list[TeamSeasonStatistic],
         all_team_season_stat_current_to_date: list[TeamSeasonStatistic],
         all_team_name_newly_qualified: list[str],
@@ -135,6 +141,7 @@ class Backtest:
     ) -> BacktestSeasonResult:
         bet = self.strategy.create_bet_if_needed(
             match=MatchLib.strip_match_result_outcome(match_result),
+            all_match_result_to_date=all_match_result_to_date,
             all_team_season_stat_previous=all_team_season_stat_previous,
             all_team_season_stat_current_to_date=all_team_season_stat_current_to_date,
             all_team_name_newly_qualified=all_team_name_newly_qualified,
@@ -198,8 +205,29 @@ class Backtest:
 
         return backtest_result
 
+    @lru_cache(maxsize=CacheLib.SIZE_CACHE_MATCH_SEASON)
+    def query_all_match_result_by_season(self, season: Season) -> list[MatchResult]:
+        return DatabaseLib.query_all_match_result_by_season([season])
+
+    @lru_cache(
+        maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON * CacheLib.SIZE_CACHE_MATCH_SEASON
+    )
+    def query_all_match_result_by_season_to_date(
+        self,
+        season: Season,
+        date: datetime_date,
+    ) -> list[MatchResult]:
+        all_match_result = self.query_all_match_result_by_season(season)
+        all_match_result_to_date = []
+
+        for match_result in all_match_result:
+            if match_result.date < date:
+                all_match_result_to_date.append(match_result)
+
+        return all_match_result_to_date
+
     @lru_cache(maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON)
-    def get_all_team_season_stat_by_season(
+    def query_all_team_season_stat_by_season(
         self,
         season: Season,
     ) -> list[TeamSeasonStatistic]:
@@ -207,8 +235,10 @@ class Backtest:
 
         return sorted(all_stat, key=lambda stat: stat.total_points, reverse=True)
 
-    @lru_cache(maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON * CacheLib.SIZE_CACHE_MATCH_SEASON)
-    def get_all_team_season_stat_by_season_to_date(
+    @lru_cache(
+        maxsize=CacheLib.SIZE_CACHE_TEAM_SEASON * CacheLib.SIZE_CACHE_MATCH_SEASON
+    )
+    def query_all_team_season_stat_by_season_to_date(
         self,
         season: Season,
         date: datetime_date,
@@ -236,10 +266,6 @@ class Backtest:
             for stat in all_team_season_stat_current
             if stat.team not in all_team_name_season_previous
         ]
-
-    @lru_cache(maxsize=CacheLib.SIZE_CACHE_MATCH_SEASON)
-    def query_all_match_result(self, season_to_test: Season) -> list[MatchResult]:
-        return DatabaseLib.query_all_match_result_by_season([season_to_test])
 
     @staticmethod
     def generate_result_string_all_backtest_result(
